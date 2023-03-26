@@ -1,12 +1,12 @@
-import { SlashCommand } from './types'
 import * as dotenv from 'dotenv'
 dotenv.config()
 
-import { Client, Events, GatewayIntentBits, Collection } from 'discord.js'
+import { Client, Events, GatewayIntentBits, Collection, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 import { commands } from './commands'
 import { DISCORD_BOT_TOKEN } from './config'
 import { ready, interactionCreate } from './events'
+import { SlashCommand } from './types'
 
 declare module 'discord.js' {
   export interface Client {
@@ -22,5 +22,46 @@ commands.forEach((command) => client.commands.set(command.data.name, command))
 client.once(Events.ClientReady, ready)
 
 client.on(Events.InteractionCreate, interactionCreate)
+
+client.on(Events.InteractionCreate, async (interaction) => {
+  if (interaction.isButton()) {
+    if (interaction.customId === 'createEmbed') {
+      const embedsChannel = client.channels.cache.get('1089517212475330562')
+
+      if (embedsChannel && 'send' in embedsChannel) {
+        const embed = new EmbedBuilder()
+          .setColor(0x0099ff)
+          .setTitle('Some title')
+          .setURL('https://discord.js.org')
+          .setDescription('Some description here')
+          .addFields({ name: 'title', value: '1' })
+
+        const row = new ActionRowBuilder<ButtonBuilder>().addComponents(
+          new ButtonBuilder().setCustomId('updateEmbed').setLabel('Update').setStyle(ButtonStyle.Primary)
+        )
+        await embedsChannel.send({ embeds: [embed], components: [row] })
+      }
+    }
+
+    if (interaction.customId === 'updateEmbed') {
+      await interaction.deferUpdate()
+      const message = interaction.message
+
+      const receivedEmbed = message.embeds[0]
+      const exampleEmbed = EmbedBuilder.from(receivedEmbed).addFields({
+        name: 'title',
+        value: 't1 \n t2 \n t3 \n t4',
+      })
+      interaction
+      await message.edit({ embeds: [exampleEmbed] })
+    }
+  }
+
+  if (interaction.isStringSelectMenu()) {
+    if (interaction.customId === 'select') {
+      await interaction.update({ content: 'Something was selected!', components: [] })
+    }
+  }
+})
 
 client.login(DISCORD_BOT_TOKEN)

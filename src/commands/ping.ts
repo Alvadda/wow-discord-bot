@@ -3,7 +3,8 @@ import { SlashCommandBuilder, ChatInputCommandInteraction, CacheType } from 'dis
 export default {
   data: new SlashCommandBuilder().setName('ping').setDescription('Replies with Pong!'),
   async execute(interaction: ChatInputCommandInteraction<CacheType>) {
-    console.log(interaction)
     await interaction.reply('Pong!')
+    const message = await interaction.fetchReply()
+    console.log(message)
   },
 }
