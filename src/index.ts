@@ -14,7 +14,7 @@ declare module 'discord.js' {
   }
 }
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds] })
+const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildEmojisAndStickers] })
 client.commands = new Collection()
 
 commands.forEach((command) => client.commands.set(command.data.name, command))
@@ -27,7 +27,6 @@ client.on(Events.InteractionCreate, async (interaction) => {
   if (interaction.isButton()) {
     if (interaction.customId === 'createEmbed') {
       const embedsChannel = client.channels.cache.get('1089517212475330562')
-
       if (embedsChannel && 'send' in embedsChannel) {
         const embed = new EmbedBuilder()
           .setColor(0x0099ff)
@@ -47,10 +46,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
       await interaction.deferUpdate()
       const message = interaction.message
 
+      console.log(interaction.client.emojis.cache.values())
+
       const receivedEmbed = message.embeds[0]
       const exampleEmbed = EmbedBuilder.from(receivedEmbed).addFields({
         name: 'title',
-        value: 't1 \n t2 \n t3 \n t4',
+        value: `<:war_ms:1089535564002373643> t1 \n t2 \n t3 \n t4`,
+        // value: 'test',
       })
       interaction
       await message.edit({ embeds: [exampleEmbed] })
