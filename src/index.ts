@@ -1,12 +1,10 @@
-import * as dotenv from 'dotenv'
-dotenv.config()
-
 import { Client, Events, GatewayIntentBits, Collection, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } from 'discord.js'
 
 import { commands } from './commands'
 import { DISCORD_BOT_TOKEN } from './config'
 import { ready, interactionCreate } from './events'
 import { SlashCommand } from './types'
+import { prisma } from './lib/primsa'
 
 declare module 'discord.js' {
   export interface Client {
@@ -67,3 +65,13 @@ client.on(Events.InteractionCreate, async (interaction) => {
 })
 
 client.login(DISCORD_BOT_TOKEN)
+;(async () => {
+  const server = await prisma.server.findMany({
+    where: {
+      region: { name: 'eu' },
+    },
+    include: { region: true },
+  })
+
+  console.log('server', server)
+})()
