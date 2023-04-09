@@ -4,5 +4,6 @@ import server from './server'
 import test from './test'
 import button from './button'
 import embed from './embed'
+import { createChar } from './createChar'
 
 export const commands = [ping, user, server, test, button, embed]

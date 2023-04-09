@@ -12,7 +12,9 @@ declare module 'discord.js' {
   }
 }
 
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildEmojisAndStickers] })
+const client = new Client({
+  intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildEmojisAndStickers, GatewayIntentBits.DirectMessages],
+})
 client.commands = new Collection()
 
 commands.forEach((command) => client.commands.set(command.data.name, command))
