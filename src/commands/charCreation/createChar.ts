@@ -136,7 +136,6 @@ export default {
               embeds: [new EmbedBuilder().addFields({ name: 'Faction', value: selectedFaction.name })],
             })
             await dmChannel.send(await getConfirmMessage(character.getCharacter()))
-            console.log(character.getCharacter())
             dmCollector.stop()
             selectCollector.stop()
             break
