@@ -67,13 +67,3 @@ client.on(Events.InteractionCreate, async (interaction) => {
 })
 
 client.login(DISCORD_BOT_TOKEN)
-;(async () => {
-  const server = await prisma.server.findMany({
-    where: {
-      region: { name: 'eu' },
-    },
-    include: { region: true },
-  })
-
-  console.log('server', server)
-})()
