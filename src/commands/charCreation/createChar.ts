@@ -3,6 +3,7 @@ import { SlashCommandBuilder, ChatInputCommandInteraction, CacheType, EmbedBuild
 import { getCharByName } from '../../db/get'
 import {
   INTERACTIONS,
+  getConfirmMessage,
   getSelectClassMessage,
   getSelectFractionMessage,
   getSelectMainSpecMessage,
@@ -12,7 +13,7 @@ import {
 } from './interactions'
 import { charBuilder } from './charBuilder'
 
-const TIMEOUT = 30000
+const TIMEOUT = 300000
 
 export default {
   data: new SlashCommandBuilder().setName('create_char').setDescription('Create a new character'),
@@ -55,7 +56,10 @@ export default {
               break
             }
 
-            await selectInteraction.update({ content: `You Selected ${selectedClass.name}`, components: [], embeds: [] })
+            await selectInteraction.update({
+              components: [],
+              embeds: [new EmbedBuilder().addFields({ name: 'Class', value: selectedClass.name })],
+            })
             await dmChannel.send(await getSelectMainSpecMessage(selectedClass.id))
             break
           }
@@ -67,7 +71,10 @@ export default {
               break
             }
 
-            await selectInteraction.update({ content: `You Selected ${selectedMainSpec.name}`, components: [], embeds: [] })
+            await selectInteraction.update({
+              components: [],
+              embeds: [new EmbedBuilder().addFields({ name: 'Main Spec', value: selectedMainSpec.name })],
+            })
             await dmChannel.send(await getSelectOffSpecMessage(selectedMainSpec.class.id))
             break
           }
@@ -79,7 +86,10 @@ export default {
               break
             }
 
-            await selectInteraction.update({ content: `You Selected ${selectedOffSpec.name}`, components: [], embeds: [] })
+            await selectInteraction.update({
+              components: [],
+              embeds: [new EmbedBuilder().addFields({ name: 'Off Spec', value: selectedOffSpec.name })],
+            })
             await dmChannel.send(await getSelectRegionMessage())
             break
           }
@@ -91,7 +101,10 @@ export default {
               break
             }
 
-            await selectInteraction.update({ content: `You Selected ${selectedRegion.name}`, components: [], embeds: [] })
+            await selectInteraction.update({
+              components: [],
+              embeds: [new EmbedBuilder().addFields({ name: 'Region', value: selectedRegion.name })],
+            })
             await dmChannel.send(await getSelectServerMessage(selectedRegion.id))
             break
           }
@@ -103,7 +116,10 @@ export default {
               break
             }
 
-            await selectInteraction.update({ content: `You Selected ${selectedServer.name}`, components: [], embeds: [] })
+            await selectInteraction.update({
+              components: [],
+              embeds: [new EmbedBuilder().addFields({ name: 'Server', value: selectedServer.name })],
+            })
             await dmChannel.send(await getSelectFractionMessage())
             break
           }
@@ -115,8 +131,11 @@ export default {
               break
             }
 
-            await selectInteraction.update({ content: `You Selected ${selectedFaction.name}`, components: [], embeds: [] })
-
+            await selectInteraction.update({
+              components: [],
+              embeds: [new EmbedBuilder().addFields({ name: 'Faction', value: selectedFaction.name })],
+            })
+            await dmChannel.send(await getConfirmMessage(character.getCharacter()))
             console.log(character.getCharacter())
             dmCollector.stop()
             selectCollector.stop()

@@ -1,18 +1,18 @@
 import { Class, Server, Specialization, Faction, Region } from '@prisma/client'
 import { getClassById, getFactionById, getRegionById, getServerById, getSpecById } from '../../db/get'
 
-interface Character {
-  name: string
-  class: Class
-  mainSpec: Specialization & { class: Class }
-  offSpec: Specialization & { class: Class }
-  server: Server
-  region: Region
-  faction: Faction
+export interface Character {
+  name?: string
+  class?: Class
+  mainSpec?: Specialization & { class: Class }
+  offSpec?: Specialization & { class: Class }
+  server?: Server
+  region?: Region
+  faction?: Faction
 }
 
 export const charBuilder = () => {
-  const char: Partial<Character> = {}
+  const char: Character = {}
 
   return {
     setName(name: string) {
